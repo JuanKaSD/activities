@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .blocks{
+            width: 70px;
+            height: 40px;
+            border: 2px solid black;
+            margin-right: 0.5%;
+            margin-bottom: 1%;
+        }
+        #set{
+            display:inline-block;
+        }
+        #set div{
+            color:black;
+            font-size:20px;
+            font-weight: bold;
+            text-align:center;
+        }
+        body{
+            padding-left: 5%;
+            padding-right:5%;
+            padding-top: 2%;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="set"></div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            var set = Array(9);
+            var colors = ['red', 'green', 'blue'];
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 16; j++) {
+                    if(i == 0){
+                        $("#set").append("<div class='3lifes' data-lifes='3' class='blocks' style='background-color: red'>3</div>");
+                    }
+                    if(i == 1){
+                        $("#set").append("<div class='2lifes' data-lifes='2' class='blocks' style='background-color: green;'>2</div>");
+                    }
+                    if(i == 2){
+                        $("#set").append("<div class='1lifes' data-lifes='1' class='blocks' style='background-color: blue'>1</div>");
+                    }
+                }
+            }   
+        });
+    </script>
+</body>
+</html>
