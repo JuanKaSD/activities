@@ -5,34 +5,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Activity 2: Responsive design</title>
+    <title>Activity 2: CSS positioning</title>
+    <!-- please, don't touch this styles -->
+    <style>
+     #third_block_container{
+       border: 1px solid #000;
+       height: 500px;
+     }
+    </style>
+    <!-- Your styles here -->
+    <style>
+    </style>
   </head>
   <body>
-    <h1>Activity 2: Responsive design</h1>
-    <p>The aim of this activity is to build a responsive layout using Bootstrap.
-       Write the code under the following paragraph, it must have:
-    </p>
-    <ul>
-      <li>A menu bar with 3 options (Option 1, Option 2, Option 3), the last
-        option must be a dropdown option with 2 options inside (Option 3.1,
-        Option 3.2)
-      </li>
-      <li>A red backgound main content space (8 cols, 12 cols on small) next to a blue background
-        right bar (4 cols, 12 cols on small)
-      </li>
-      <li>A grey backgound footer space full width
-      </li>
-    </ul>
-
-    <!-- Your code here -->
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <h1>Activity 2: CSS positioning</h1>
+    <p>Style the following blocks following the instructions inside</p>
+    <div id="first_block"><ul><li>Size: 100x50px</li><li>background: red</li><li>Position: top right, fixed to the document</li><li>Hide any content that overflows div dimensions</li></ul></div>
+    <div id="second_block"><ul><li>Size: 100x50px</li><li>Background: blue</li><li>Position: top left, fixed to the window</li><li>Show scroll bars when content overflows div dimensions</li></ul></div>
+    <div id="container">
+      I'm containing some blocks
+      <div class="third_block"><ul><li>width 50%</li><li>background: grey</li><li>Position: on the bottom left corner on the container (third_block_container) div</li></ul></div>
+      <div class="fourth_block"><ul><li>width 50%</li><li>background: pink</li></ul></div>
+    </div>
   </body>
 </html>
