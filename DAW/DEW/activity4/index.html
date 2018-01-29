@@ -7,32 +7,52 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
-        .blocks{
+        .ThreeLifes, .TwoLifes, .OneLifes {
             width: 70px;
             height: 40px;
             border: 2px solid black;
             margin-right: 0.5%;
             margin-bottom: 1%;
         }
-        #set{
-            display:inline-block;
-        }
         #set div{
             color:black;
             font-size:20px;
             font-weight: bold;
             text-align:center;
+            display:inline-block;
         }
         body{
             padding-left: 5%;
             padding-right:5%;
             padding-top: 2%;
         }
+        .ball{
+            background: black;
+            position: absolute;
+            bottom: 20px;
+            left: 50vw;
+            width: 20px;
+            height: 20px;
+        }
+        .stick{
+            background:yellow;
+            border: 2px solid black;
+            position: absolute;
+            bottom: 0;
+            left:47vw;
+            width: 100px;
+            height: 20px;
+        }
+        body{
+            padding-top:0;
+        }
     </style>
     
 </head>
 <body>
-    <div id="set"></div>
+    <div class="container">
+        <div id="set"></div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -40,20 +60,54 @@
         $(document).ready(function(){
             var set = Array(9);
             var colors = ['red', 'green', 'blue'];
+            var contador = 0;
             for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 16; j++) {
+                for (let j = 0; j < 14; j++, contador++) {
                     if(i == 0){
-                        $("#set").append("<div class='3lifes' data-lifes='3' class='blocks' style='background-color: red'>3</div>");
+                        $("#set").append("<div id='"+contador+"' class='ThreeLifes' data-lifes='3' style='background-color: red'>3</div>");
                     }
                     if(i == 1){
-                        $("#set").append("<div class='2lifes' data-lifes='2' class='blocks' style='background-color: green;'>2</div>");
+                        $("#set").append("<div id='"+contador+"' class='TwoLifes' data-lifes='2' style='background-color: green;'>2</div>");
                     }
                     if(i == 2){
-                        $("#set").append("<div class='1lifes' data-lifes='1' class='blocks' style='background-color: blue'>1</div>");
+                        $("#set").append("<div id='"+contador+"' class='OneLifes' data-lifes='1' style='background-color: blue'>1</div>");
                     }
                 }
             }   
+            $("#set").append("<div class='ball' id='ball'></div>");
+            $("#set").append("<div class='stick'></div>");
+            $("#set").hide().fadeIn();
+            
         });
+        $(document).on("keydown", function( event ) {
+            //32 == space
+            if(event.which  == 32){
+                setInterval(function(){
+                $("#ball").css({"bottom":"+=1"});
+                check($("#ball"));
+            }, 1);
+                /*$(".ball").animate({
+                    bottom: "+=1000",
+                    step: function(){
+                        alert("akjsbda,ms");
+                    }
+                }, 3000, function() {
+                    console.log("algo");       
+                });*/
+            }
+        });
+        function check(ball){
+            var ballPosition = ball.position().top;
+            for (let i = 0; i < 42; i++) {
+                var element = $("#"+i);
+                var elementBot = element.position().top + element.height();
+                if(ballPosition == elementBot){
+                    element.show().hide("slow");
+                    element.attr("display","none");
+                }
+            }
+        }
+        
     </script>
 </body>
 </html>
