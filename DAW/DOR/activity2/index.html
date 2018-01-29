@@ -8,13 +8,46 @@
     <title>Activity 2: CSS positioning</title>
     <!-- please, don't touch this styles -->
     <style>
-     #third_block_container{
+      #container{
        border: 1px solid #000;
        height: 500px;
      }
     </style>
     <!-- Your styles here -->
     <style>
+    #first_block{
+      height: 50px;
+      width: 100px;
+      background: red;
+      position: absolute;
+      right: 0;
+      top: 0;
+      overflow: hidden;
+    }
+    #second_block{
+      height: 50px;
+      width: 100px;
+      background: blue;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: scroll;
+    }
+    #container{
+      position: relative;
+    }
+    .third_block{
+      width: 50%;
+      background: grey;
+      position:absolute;
+      left: 0;
+      bottom: 0;
+    }
+    .fourth_block{
+      width:50%;
+      background:pink;
+    }
+    
     </style>
   </head>
   <body>
