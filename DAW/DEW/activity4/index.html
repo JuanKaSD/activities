@@ -13,38 +13,68 @@
             border: 2px solid black;
             margin-right: 0.5%;
             margin-bottom: 1%;
+            color: white;
+        }
+        .ThreeLifes{
+            background-image: url("brick3Lv.png");
+        }
+        .TwoLifes{
+            background-image: url("brick2Lv.png");
+        }
+        .OneLifes{
+            background-image: url("brick1Lv.png");
         }
         #set div{
             color:black;
             font-size:20px;
             font-weight: bold;
             text-align:center;
-            display:inline-block;
+            display: block;
         }
         body{
             padding-left: 5%;
             padding-right:5%;
             padding-top: 2%;
+            overflow: hidden;
         }
         .ball{
             background: black;
             position: absolute;
             bottom: 20px;
-            left: 50vw;
+            left: 52vw;
             width: 20px;
             height: 20px;
+            border: 1px black solid;
+            border-radius:25px;
         }
         .stick{
-            background:yellow;
-            border: 2px solid black;
             position: absolute;
             bottom: 0;
-            left:47vw;
-            width: 100px;
-            height: 20px;
+            left:44vw;
         }
         body{
             padding-top:0;
+            background-image: url("background.jpg");
+        }
+        #set td{
+            width: 70px;
+            height: 40px;
+        }
+        .score{
+            position: absolute;
+            top:0;
+            left:90%;
+            background-color: lightblue;
+            padding:1%;
+            border: 1px solid black;
+        }
+        .insert{
+            position: absolute;
+            background-image: url("insertCoin.png");
+            left: 30vw;
+            top:30vh;
+            width: 600px;
+            height: 240px;
         }
     </style>
     
@@ -57,57 +87,253 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
+        var interval = null;
+        var platformInterval = null;
+        var minY = 0;
         $(document).ready(function(){
+            set();
+            moveBall("up",5, true); 
+            $("#set").fadeTo( "superfast" , 0.5);
+            play("start.wav");
+        });
+        $(document).on("keydown", function( event ) {
+            if(event.which == 32){
+                clearInterval(interval);
+                platformInterval = null;
+                set();
+                moveBall("up",4, false); 
+                $("#set").css({"opacity":"1"});
+                $(".insert").show().hide("slow");  
+                play("start.wav");
+            }
+            var direction = "";
+            if(event.which  == 37){
+                direction = "left";
+            }
+            if(event.which  == 39){
+                direction = "right";
+            }
+            if(platformInterval == null){
+                platformInterval = setInterval(function() {
+                    moveStick(direction);
+                }, 30);
+            }
+        });
+        $(document).on("keyup", function( event ) {
+            if(event.which  == 37 || event.which  == 39){
+                clearInterval(platformInterval);
+                platformInterval = null;
+            }
+        });
+
+        function autoMoveStick(){
+            var ballPosition = $("#ball").position().left+($("#ball").width()/2);
+            $("#stick").css({"left":ballPosition-+($("#stick").width()/2)});  
+        }
+        function moveStick(where){
+            var stickPositionLeft = $("#stick").position().left;
+            var stickPositionRight = $("#stick").position().left + $("#stick").width();
+            switch (where) {
+                case "left":
+                    if(stickPositionLeft > 0){
+                        $("#stick").css({"left":"-=30"});  
+                    }else{
+                        clearInterval(platformInterval);
+                    }
+                    break;
+                case "right":
+                    if(stickPositionRight <= screen.width){
+                        $("#stick").css({"left":"+=30"});  
+                    }else{
+                        clearInterval(platformInterval);
+                    }
+                    break;
+            }
+        }
+        function check(ball, where, speed){
+            var ballPositionTop = ball.position().top;
+            var ballPositionLeft = ball.position().left;
+            var ballPositionRight = ball.position().left + ball.width();
+            var ballPositionBottom = ball.position().top + ball.height();
+            var stickPositionTop = $("#stick").position().top;
+            var stickPositionLeft = $("#stick").position().left;
+            var stickPositionRight = $("#stick").position().left + $("#stick").width();
+            //if(ballPositionTop <= minY){
+                for (let i = 0; i < 42; i++) {
+                    var element = $("#"+i);
+                    var elementTop = element.position().top
+                    var elementBot = element.position().top + element.height();
+                    var elementLeft = element.position().left;
+                    var elementRight = element.position().left + element.width();
+                    if(
+                        /* up */
+                        ballPositionTop <= elementBot && ballPositionRight >= elementLeft && ballPositionLeft <= elementRight && ballPositionTop >= elementBot
+                            ||
+                        /* right */
+                        ballPositionRight >= elementLeft && ballPositionBottom >= elementTop && ballPositionTop <= elementBot && ballPositionRight <= elementRight
+                            ||
+                        /* down */
+                        ballPositionBottom >= elementTop && ballPositionRight >= elementLeft && ballPositionLeft <= elementRight && ballPositionBottom <= elementBot
+                            ||
+                        /* left */
+                        ballPositionLeft <= elementRight && ballPositionBottom >= elementTop && ballPositionTop <= elementBot && ballPositionLeft >= elementLeft
+                    ){
+                        if(element.html() == "3"){
+                            element.html("2");
+                            element.css({"background-image":"url('brick2Lv.png')"});
+                            play("hitbrik.wav");
+                        }else if(element.html() == "2"){
+                            element.html("1");
+                            element.css({"background-image":"url('brick1Lv.png')"});
+                            play("hitbrik.wav");
+                        }else if(element.html() == "1"){
+                            play("destroyed.wav");
+                            element.show().hide("slow");    
+                            $("#score").html(parseInt($("#score").html())-1);
+                        }
+                        /*if(where == "upright"){
+                            if(ballPositionTop >= elementBot)
+                                return "upleft/"+speed;
+                            else
+                                return "downright/"+speed;
+                        }
+                        if(where == "upleft"){
+                            if(ballPositionTop >= elementBot)
+                                return "upright/"+speed;
+                            else
+                                return "downleft/"+speed;
+                        }*/
+                        if(where == "upright"){
+                            return "downright/"+speed;
+                        }else{
+                            return "downleft/"+speed;
+                        }
+                        
+                    }
+                }
+            //}
+            if(ballPositionLeft < 0){
+                if(where == "upleft"){
+                    return "upright/"+speed;
+                }
+                if(where == "downleft"){
+                    return "downright/"+speed;
+                }
+            }
+            if(ballPositionRight > window.innerWidth){
+                if(where == "upright"){
+                    return "upleft/"+speed;
+                }
+                if(where == "downright"){
+                    return "downleft/"+speed;
+                }
+            }
+            if(ballPositionTop <= 0){
+                if(where == "upleft"){
+                    return "downleft/"+speed;
+                }else{
+                    return "downright/"+speed;
+                }
+            }
+            if(ballPositionBottom >= stickPositionTop && ballPositionRight >= stickPositionLeft && ballPositionLeft <= stickPositionRight){
+                play("hit.wav");
+                if($("#ball").position().left + ($("#ball").width()/2) < stickPositionLeft + ($("#stick").width()/2)){
+                    if($("#ball").position().left + ($("#ball").width()/2) < stickPositionLeft + ($("#stick").width()/4)){
+                        return "upleft/6";
+                    }else{
+                        return "upleft/4";
+                    }
+                }else{
+                    if($("#ball").position().left + ($("#ball").width()/2) > stickPositionLeft + (3/4*($("#stick").width()))){
+                        return "upright/6";
+                    }else{
+                        return "upright/4";
+                    }
+                }
+            }
+            if(ballPositionBottom >= window.innerHeight){
+                return "finish";
+            }
+            return where+"/"+speed;
+        }
+        function moveBall(where, speed, auto){
+            
+            interval = setInterval(function(){
+                switch (where) {
+                    case "up":
+                        $("#ball").css({"top":"-="+speed});  
+                        break;
+                    case "left":
+                        $("#ball").css({"left":"-="+speed});    
+                        break;
+                    case "down":
+                        $("#ball").css({"top":"+="+speed});  
+                        break;
+                    case "right":
+                        $("#ball").css({"left":"+="+speed});    
+                        break;
+                    case "upleft":
+                        $("#ball").css({"top":"-="+speed});  
+                        $("#ball").css({"left":"-="+speed});    
+                        break;
+                    case "upright":
+                        $("#ball").css({"top":"-="+speed});  
+                        $("#ball").css({"left":"+="+speed});    
+                        break;
+                    case "downleft":
+                        $("#ball").css({"top":"+="+speed});  
+                        $("#ball").css({"left":"-="+speed});    
+                        break;
+                    case "downright":
+                        $("#ball").css({"top":"+="+speed});  
+                        $("#ball").css({"left":"+="+speed});    
+                        break;
+                    case "finish":
+                        finish();
+                        break;
+                }
+                var dummy = check($("#ball"), where, speed).split("/");
+                where = dummy[0];
+                speed = dummy[1];
+                if(auto){
+                    autoMoveStick();
+                }
+            }, 1);
+        }
+        function finish(){
+            window.location="index.html";
+        }
+        function set(){
+            $("#set").html("");
             var set = Array(9);
-            var colors = ['red', 'green', 'blue'];
             var contador = 0;
+            $("#set").append("<table>");
             for (let i = 0; i < 3; i++) {
+                $("#set").append("<tr>");
                 for (let j = 0; j < 14; j++, contador++) {
                     if(i == 0){
-                        $("#set").append("<div id='"+contador+"' class='ThreeLifes' data-lifes='3' style='background-color: red'>3</div>");
+                        $("#set").append("<td><div id='"+contador+"' class='ThreeLifes' style='color:white'>3</div>");
                     }
                     if(i == 1){
-                        $("#set").append("<div id='"+contador+"' class='TwoLifes' data-lifes='2' style='background-color: green;'>2</div>");
+                        $("#set").append("<td><div id='"+contador+"' class='TwoLifes' style='color:white'>2</div>");
                     }
                     if(i == 2){
-                        $("#set").append("<div id='"+contador+"' class='OneLifes' data-lifes='1' style='background-color: blue'>1</div>");
+                        $("#set").append("<td><div id='"+contador+"' class='OneLifes' style='color:white'>1</div>");
                     }
                 }
             }   
+            $("#set").append("</table>");
             $("#set").append("<div class='ball' id='ball'></div>");
-            $("#set").append("<div class='stick'></div>");
-            $("#set").hide().fadeIn();
-            
-        });
-        $(document).on("keydown", function( event ) {
-            //32 == space
-            if(event.which  == 32){
-                setInterval(function(){
-                $("#ball").css({"bottom":"+=1"});
-                check($("#ball"));
-            }, 1);
-                /*$(".ball").animate({
-                    bottom: "+=1000",
-                    step: function(){
-                        alert("akjsbda,ms");
-                    }
-                }, 3000, function() {
-                    console.log("algo");       
-                });*/
-            }
-        });
-        function check(ball){
-            var ballPosition = ball.position().top;
-            for (let i = 0; i < 42; i++) {
-                var element = $("#"+i);
-                var elementBot = element.position().top + element.height();
-                if(ballPosition == elementBot){
-                    element.show().hide("slow");
-                    element.attr("display","none");
-                }
-            }
+            $("#set").append("<div class='stick' id='stick'><img src='stick.png'></div>");
+            $("#set").append("<div class='score' id='score'>"+(contador+1)+"</div>");
+            $("body").append("<div class='insert'></div>");
+            $("body").hide().fadeIn();
+            minY = ($("#0").height()*3)+5;
         }
-        
+        function play(path){
+            var snd = new Audio(path);
+            snd.play();
+        }
     </script>
 </body>
 </html>
