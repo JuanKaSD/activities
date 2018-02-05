@@ -1,0 +1,61 @@
+.ThreeLifes, .TwoLifes, .OneLifes {
+    width: 70px;
+    height: 40px;
+    border: 2px solid black;
+    margin-right: 0.5%;
+    margin-bottom: 1%;
+    color: white;
+}
+.ThreeLifes{
+    background-image: url("brick3Lv.png");
+}
+.TwoLifes{
+    background-image: url("brick2Lv.png");
+}
+.OneLifes{
+    background-image: url("brick1Lv.png");
+}
+#set div{
+    color:black;
+    font-size:20px;
+    font-weight: bold;
+    text-align:center;
+    display: block;
+}
+body{
+    padding-left: 5%;
+    padding-right:5%;
+    padding-top: 2%;
+    overflow: hidden;
+}
+.ball{
+    background: black;
+    position: absolute;
+    bottom: 30px;
+    left: 52vw;
+    width: 20px;
+    height: 20px;
+    border: 1px black solid;
+    border-radius:25px;
+}
+.stick{
+    position: absolute;
+    bottom: 0;
+    left:44vw;
+}
+body{
+    padding-top:0;
+    background-image: url("background.jpg");
+}
+#set td{
+    width: 70px;
+    height: 40px;
+}
+.insert{
+    position: absolute;
+    background-image: url("insertCoin.png");
+    left: 30vw;
+    top:30vh;
+    width: 600px;
+    height: 240px;
+}
