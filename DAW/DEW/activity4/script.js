@@ -6,8 +6,8 @@ var lengthStage = 0;
 $(document).ready(function(){
     chargeStage(5);
     set();
-    moveBall("up",6, true); 
-    $("#set").fadeTo( "superfast" , 0.5);
+    moveBall("up",1, true); 
+    $("#set").fadeTo("superfast" , 0.5);
     play("start.wav");
 });
 $(document).on("keydown", function( event ) {
@@ -16,7 +16,7 @@ $(document).on("keydown", function( event ) {
         platformInterval = null;
         chargeStage(5);
         set();
-        moveBall("up",4, false); 
+        moveBall("up",1, false); 
         $("#set").css({"opacity":"1"});
         $(".insert").show().hide("slow");  
         play("start.wav");
@@ -98,25 +98,42 @@ function check(ball, where, speed){
         var elementBot = element.position().top + element.height();
         var elementLeft = element.position().left;
         var elementRight = element.position().left + element.width();
-        if(ballPositionTop <= elementBot && ballPositionRight >= elementLeft && ballPositionLeft <= elementRight && ballPositionTop >= elementBot
-                ||
-            ballPositionRight >= elementLeft && ballPositionBottom >= elementTop && ballPositionTop <= elementBot && ballPositionRight <= elementRight
-                ||
-            ballPositionBottom >= elementTop && ballPositionRight >= elementLeft && ballPositionLeft <= elementRight && ballPositionBottom <= elementBot
-                ||
-            ballPositionLeft <= elementRight && ballPositionBottom >= elementTop && ballPositionTop <= elementBot && ballPositionLeft >= elementLeft
-        ){
+        if(ballPositionTop <= elementBot && ballPositionLeft >= elementLeft && ballPositionRight <= elementRight){
             breakBrick(element);
+            console.log("up");
             if(where == "upright"){
                 return "downright/"+speed;
             }else if(where == "upleft"){
                 return "downleft/"+speed;
+            }if(where == "up"){
+                return "down/"+speed;
             }
-            
+        }else if(ballPositionBottom >= elementTop && ballPositionLeft >= elementLeft && ballPositionRight <= elementRight && ballPositionTop <= elementTop) {
+            breakBrick(element);
+            console.log("down");
+            if(where == "downright"){
+                return "upright/"+speed;
+            }else if(where == "downleft"){
+                return "upleft/"+speed;
+            }
+        }else if(ballPositionLeft == elementRight && ballPositionTop >= elementTop && ballPositionBottom <= elementBot){
+            breakBrick(element);
+            console.log("left");
+            if(where == "downleft"){
+                return "downright/"+speed;
+            }else if(where == "upleft"){
+                return "upright/"+speed;
+            }
+        }else if(ballPositionRight >= elementLeft && ballPositionTop >= elementTop && ballPositionBottom <= elementBot && elementRight > ballPositionRight){
+            breakBrick(element);
+            console.log("right");
+            if(where == "downright"){
+                return "downleft/"+speed;
+            }else if(where == "upright"){
+            }
         }
-
     }
-    if(ballPositionLeft < 0){
+    if(ballPositionLeft <= 0){
         if(where == "upleft"){
             return "upright/"+speed;
         }
@@ -202,7 +219,7 @@ function moveBall(where, speed, auto){
         if(auto){
             autoMoveStick();
         }
-    }, 1);
+    }, 20);
 }
 function finish(){
     window.location="index.html";
@@ -226,13 +243,10 @@ function set(){
             }
         }
     }   
-    var middleTable = $("#set table").width()/2;
-    $("#set table").css({"let":"50vw-"+middleTable});
     $("#set").append("<div class='ball' id='ball'></div>");
     $("#set").append("<div class='stick' id='stick'><img src='stick.png'></div>");
     $("body").append("<div class='insert'></div>");
     $("body").hide().fadeIn();
-    minY = ($("#0").height()*3)+5;
 }
 function play(path){
     var snd = new Audio(path);
@@ -250,6 +264,8 @@ function breakBrick(element){
     }else if(element.html() == "1"){
         play("destroyed.wav");
         element.show().hide("slow");    
+        element.css({"display":"none"});
+        element.css({"top":"-1000"});
     }
 }
 /*
