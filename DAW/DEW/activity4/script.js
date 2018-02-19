@@ -16,7 +16,7 @@ $(document).on("keydown", function( event ) {
         platformInterval = null;
         chargeStage(5);
         set();
-        moveBall("up",1, false); 
+        moveBall("downleft",1, false); 
         $("#set").css({"opacity":"1"});
         $(".insert").show().hide("slow");  
         play("start.wav");
@@ -130,6 +130,7 @@ function check(ball, where, speed){
             if(where == "downright"){
                 return "downleft/"+speed;
             }else if(where == "upright"){
+                return "upleft/"+speed;
             }
         }
     }

@@ -58,4 +58,11 @@ body{
     top:30vh;
     width: 600px;
     height: 240px;
+    animation: bomb .8s infinite;
+	transform-origin: center;
+}
+@keyframes bomb {
+    from { transform: none; }
+    50% { transform: scale(1.3); }
+    to { transform: none; }
 }
