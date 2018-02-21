@@ -17,9 +17,17 @@
         width: 50px;
         border-radius: 5px;
       }
+      #current{
+        position: relative;
+        margin: 0 auto;
+        color:white;
+        padding-top: 20px;
+        padding-left: 50px;
+      }
     </style>
     <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <h1>Activity 5: the audio tag + events</h1>
@@ -35,6 +43,17 @@
       <li>music2.mp3</li>
       <li>music3.mp3</li>
     </ol>
+    
+    <div class="container">
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div id="current"></div>
+    </div>
     <audio id="player">
      <source src="" type="audio/mpeg">
      Your browser does not support the audio tag.
@@ -44,6 +63,6 @@
       <div class="backward" id="backward"><i class="fa fa-step-backward"></i></div>
       <div class="fordward" id="fordward"><i class="fa fa-step-forward"></i></div>
     </div>
-    <div id="current"></div>
+    
   </body>
 </html>
